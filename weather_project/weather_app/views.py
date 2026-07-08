@@ -25,7 +25,14 @@ def city_view(request):
     response = requests.get(url)
     data = response.json()
 
-    current = data['current']
+    #Catches invalid searches
+    try:
+        current = data['current']
+    except KeyError:
+        return render(request, 'weather_app/home.html', {"error" : "Invalid city."})
+        
+    # Gets the acutal proper location name instead of what the user types
+    official_city = data['location']['name']
 
     misc = {
         "last_updated"   : current['last_updated'],
@@ -79,6 +86,7 @@ def city_view(request):
     context = {
         "city" : city,
         "weather" : weather,
+        "official_city": official_city,
     }
 
     return render(request, 'weather_app/city.html', context)

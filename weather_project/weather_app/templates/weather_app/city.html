@@ -11,22 +11,24 @@
     </head>
     <body>
 
-        <h1> {{ city }} </h1>
-
+        <h1> {{ official_city }} </h1>
         <h2> Weather </h2>
-        
             <form action="{% url 'city' %}" method="GET">
                 <input type="hidden" name="city" value="{{ city }}">
                 
                 <button type="submit" class="btn btn-primary" name="unit" value="imperial">Imperial</button>
                 <button type="submit" class="btn btn-success" name="unit" value="metric">Metric</button>
             </form>
-
-
             {% for key, value in weather.items %}
             
                 <p> {{ key }}: {{ value }} <p>
 
             {% endfor %}
     </body>
+
+
+    <form action="{% url 'home' %}">
+        <button type="submit" class="btn btn-info" name="unit" value="imperial">HOME</button>
+    </form>
+
 </html>
