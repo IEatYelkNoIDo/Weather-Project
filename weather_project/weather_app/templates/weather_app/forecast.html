@@ -12,23 +12,31 @@
     <body>
 
         <h1> {{ official_city }} </h1>
-        <h2> Weather </h2>
-            <form action="{% url 'city' %}" method="GET">
+        <h2> Weather Forecast </h2>
+            <form action="{% url 'forecast' %}" method="GET">
                 <input type="hidden" name="city" value="{{ city }}">
+                <input type="hidden" name="unit" value="{{ unit }}">
                 
                 <button type="submit" class="btn btn-primary" name="unit" value="imperial">Imperial</button>
                 <button type="submit" class="btn btn-success" name="unit" value="metric">Metric</button>
             </form>
-            {% for key, value in weather.items %}
-            
-                <p> {{ key }}: {{ value }} <p>
-
+            {% for hour in forecast.hour %}
+                {% if unit == 'imperial'%}
+                    <p>Max Temp: {{ hour.temp_f }}°F</p>
+                {% else %}
+                    <p>Max Temp: {{ hour.temp_c }}°C</p>
+                {% endif %}
             {% endfor %}
     </body>
 
 
     <form action="{% url 'home' %}">
         <button type="submit" class="btn btn-info" name="unit" value="imperial">HOME</button>
+    </form>
+    <form action="{% url 'current' %}">
+         <input type="hidden" name="city" value="{{ city }}">
+         <input type="hidden" name="unit" value="{{ unit }}">
+        <button type="submit" class="btn btn-secondary" name="unit" value="unit">CURRENT</button>
     </form>
 
 </html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    </head>
+    <body>
+
+        <h1> {{ official_city }} </h1>
+        <h2> Current Weather </h2>
+            <form action="{% url 'current' %}" method="GET">
+                <input type="hidden" name="city" value="{{ city }}">
+                <input type="hidden" name="unit" value="{{ unit }}">
+                
+                <button type="submit" class="btn btn-primary" name="unit" value="imperial">Imperial</button>
+                <button type="submit" class="btn btn-success" name="unit" value="metric">Metric</button>
+            </form>
+            {% if unit == 'imperial'%}
+                    <p>Temperature: {{ current.temp_f }}°F</p>
+                    <p>Feels Like: {{ current.feelslike_f }}°F</p>
+                    <p>Precipitation: {{ current.precip_in}}in</p>
+                    <p>Heat Index: {{ current.heatindex_f }}°F</p>
+                    <p>Wind Chill: {{ current.windchill_f }}°F</p>
+                    <p>Wind Speed: {{ current.wind_mph }}mph</p>
+                    <p>Wind Gust: {{ current.gust_mph }}mph</p>
+                    <p>Dew Point: {{ current.dewpoint_f }}°F</p>
+                    <p>Visibility: {{ current.vis_miles }}mi</p>
+                    <p>Pressure: {{ current.pressure_in }}in</p>
+                {% else %}
+                    <p>Temperature: {{ current.temp_c }}°C</p>
+                    <p>Feels Like: {{ current.feelslike_c }}°C</p>
+                    <p>Precipitation: {{ current.precip_mm}}mm</p>
+                    <p>Heat Index: {{ current.heatindex_c }}°C</p>
+                    <p>Wind Chill: {{ current.windchill_c }}°C</p>
+                    <p>Wind Speed: {{ current.wind_kph }}kph</p>
+                    <p>Wind Gust: {{ current.gust_kph }}kph</p>
+                    <p>Dew Point: {{ current.dewpoint_c }}°C</p>
+                    <p>Visibility: {{ current.vis_km }}km</p>
+                    <p>Pressure: {{ current.pressure_mb }}mb</p>
+                {% endif %}
+    </body>
+
+
+    <form action="{% url 'home' %}">
+        <button type="submit" class="btn btn-info" name="unit" value="imperial">HOME</button>
+    </form>
+    <form action="{% url 'forecast' %}" method="GET">
+        <input type="hidden" name="city" value="{{ city }}">
+        <input type="hidden" name="unit" value="{{ unit }}">
+        <button type="submit" class="btn btn-secondary" name="unit" value="unit">FORECAST</button>
+    </form>
+
+</html>
