@@ -20,11 +20,14 @@
                 <button type="submit" class="btn btn-primary" name="unit" value="imperial">Imperial</button>
                 <button type="submit" class="btn btn-success" name="unit" value="metric">Metric</button>
             </form>
+            <h6>{{ time }}</h6>
             {% if unit == 'imperial'%}
                     <p>Temperature: {{ current.temp_f }}°F</p>
                     <p>Feels Like: {{ current.feelslike_f }}°F</p>
+                    <p>Rain Chance: {{ current.chance_of_rain }}%</p>
                     <p>Precipitation: {{ current.precip_in}}in</p>
                     <p>Heat Index: {{ current.heatindex_f }}°F</p>
+                    <p>UV: {{ current.uv }}</p>
                     <p>Wind Chill: {{ current.windchill_f }}°F</p>
                     <p>Wind Speed: {{ current.wind_mph }}mph</p>
                     <p>Wind Gust: {{ current.gust_mph }}mph</p>
@@ -34,8 +37,10 @@
                 {% else %}
                     <p>Temperature: {{ current.temp_c }}°C</p>
                     <p>Feels Like: {{ current.feelslike_c }}°C</p>
+                    <p>Rain Chance: {{ current.chance_of_rain }}%</p>
                     <p>Precipitation: {{ current.precip_mm}}mm</p>
                     <p>Heat Index: {{ current.heatindex_c }}°C</p>
+                    <p>UV: {{ current.uv }}</p>
                     <p>Wind Chill: {{ current.windchill_c }}°C</p>
                     <p>Wind Speed: {{ current.wind_kph }}kph</p>
                     <p>Wind Gust: {{ current.gust_kph }}kph</p>
