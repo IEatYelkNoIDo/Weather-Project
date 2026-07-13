@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from dotenv import load_dotenv
+from .functions.time_of_day import find_time
 import os
 
 import requests
@@ -10,11 +11,10 @@ WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 # Create your views here.
 
 def home_view(request):
-    
     return render(request, 'weather_app/home.html')
 
-def current_view(request):
 
+def current_view(request):
     city = request.GET.get('city')
     unit = request.GET.get('unit', 'imperial')
 
@@ -33,6 +33,7 @@ def current_view(request):
         
     # Gets the acutal proper location name instead of what the user types
     official_city = data['location']['name']
+    time = find_time(current['is_day'])
 
     misc = {
         "last_updated"   : current['last_updated'],
@@ -89,8 +90,8 @@ def current_view(request):
         "weather" : weather,
         "official_city": official_city,
         "unit" : unit,
+        "time" : time,
     }
-
     return render(request, 'weather_app/current.html', context)
 
 
@@ -105,14 +106,10 @@ def forcast_view(request):
     url = f'https://api.weatherapi.com/v1/forecast.json?key={WEATHER_API_KEY}&q={city}'
     response = requests.get(url)
     data = response.json()
-
-    forecast = data['forecast']
         
     # Gets the acutal proper location name instead of what the user types
     official_city = data['location']['name']
     forecast = data['forecast']['forecastday'][0]
-
-    
 
     context = {
         "city" : city,
@@ -120,5 +117,4 @@ def forcast_view(request):
         "forecast" : forecast,
         "unit" : unit,
     }
-
     return render(request, 'weather_app/forecast.html', context)

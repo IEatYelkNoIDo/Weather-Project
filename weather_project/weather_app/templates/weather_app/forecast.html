@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html lang="en">
@@ -13,20 +14,49 @@
 
         <h1> {{ official_city }} </h1>
         <h2> Weather Forecast </h2>
-            <form action="{% url 'forecast' %}" method="GET">
-                <input type="hidden" name="city" value="{{ city }}">
-                <input type="hidden" name="unit" value="{{ unit }}">
-                
-                <button type="submit" class="btn btn-primary" name="unit" value="imperial">Imperial</button>
-                <button type="submit" class="btn btn-success" name="unit" value="metric">Metric</button>
-            </form>
-            {% for hour in forecast.hour %}
-                {% if unit == 'imperial'%}
-                    <p>Max Temp: {{ hour.temp_f }}°F</p>
-                {% else %}
-                    <p>Max Temp: {{ hour.temp_c }}°C</p>
-                {% endif %}
-            {% endfor %}
+        
+        <form action="{% url 'home' %}">
+            <button type="submit" class="btn btn-info" name="unit" value="imperial">HOME</button>
+        </form>
+
+        <form action="{% url 'current' %}">
+            <input type="hidden" name="city" value="{{ city }}">
+            <input type="hidden" name="unit" value="{{ unit }}">
+            <button type="submit" class="btn btn-secondary" name="unit" value="unit">CURRENT</button>
+        </form>
+
+        <form action="{% url 'forecast' %}" method="GET">
+            <input type="hidden" name="city" value="{{ city }}">
+            <input type="hidden" name="unit" value="{{ unit }}">
+            
+            <button type="submit" class="btn btn-primary" name="unit" value="imperial">Imperial</button>
+            <button type="submit" class="btn btn-success" name="unit" value="metric">Metric</button>
+        </form>
+        
+        {% for hour in forecast.hour %}
+            <div class="card" style="width: 18rem; margin: 10px;">
+                <div class="card-header">
+                    {{ hour.time|slice:"11:" }}
+                    <img src="https:{{ hour.condition.icon }}"
+                        alt="{{ hour.condition.text }}">
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% if unit == 'imperial'%}
+                        <li class="list-group-item">Temp: {{ hour.temp_f }}°F</li>
+                        <li class="list-group-item">Rain Chance: {{ hour.chance_of_rain }}%</li>
+                        <li class="list-group-item">Wind: {{ hour.wind_mph }}mph</li>
+                        <li class="list-group-item">Humidity: {{ hour.humidity }}%</li>
+                        <li class="list-group-item">UV: {{ hour.uv }}</li>
+                    {% else %}
+                        <li class="list-group-item">Temp: {{ hour.temp_c }}°C</li>
+                        <li class="list-group-item">Rain Chance: {{ hour.chance_of_rain }}%</li>
+                        <li class="list-group-item">Wind: {{ hour.wind_kph }}kph</li>
+                        <li class="list-group-item">Humidity: {{ hour.humidity }}%</li>
+                        <li class="list-group-item">UV: {{ hour.uv }}</li>
+                    {% endif %} 
+                </ul>
+            </div>
+        {% endfor %}
     </body>
 
 
