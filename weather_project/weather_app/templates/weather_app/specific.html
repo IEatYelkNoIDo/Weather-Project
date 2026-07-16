@@ -12,7 +12,7 @@
     </head>
     <body>
 
-        <h1> {{ official_city }} </h1>
+        <h1> {{ official_city }} {{ hour.time }}</h1>
         <h2> Weather Forecast </h2>
         
         <form action="{% url 'home' %}">
@@ -24,10 +24,17 @@
             <input type="hidden" name="unit" value="{{ unit }}">
             <button type="submit" class="btn btn-secondary" name="unit" value="unit">CURRENT</button>
         </form>
-
+        
         <form action="{% url 'forecast' %}" method="GET">
             <input type="hidden" name="city" value="{{ city }}">
             <input type="hidden" name="unit" value="{{ unit }}">
+            <button type="submit" class="btn btn-secondary" name="unit" value="unit">FORECAST</button>
+        </form>
+
+        <form action="{% url 'specific' %}" method="GET">
+            <input type="hidden" name="city" value="{{ city }}">
+            <input type="hidden" name="unit" value="{{ unit }}">
+            <input type="hidden" name="index" value-"{{ index }}">
             
             {% if unit == 'imperial' %}
                 <button type="submit" class="btn btn-outline-primary" name="unit" value="imperial" disabled>Imperial</button>
@@ -38,35 +45,36 @@
             {% endif %}
         </form>
         
-        {% for hour in forecast.hour %}
-            <div class="card" style="width: 18rem; margin: 10px;">
-                <div class="card-header d-flex align-items-center">
-                    {{ hour.time|slice:"11:" }}
-                    <img class="mx-2" src="https:{{ hour.condition.icon }}"
-                        alt="{{ hour.condition.text }}">
-                    <form action="{% url 'specific' %}">
-                        <input type="hidden" name="city" value="{{ city }}">
-                        <input type="hidden" name="unit" value="{{ unit }}">
-                        <button type="submit" class="btn btn-primary ms-auto" name="index" value="{{ forloop.counter0 }}">Details</button>
-                    </form>
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% if unit == 'imperial'%}
-                        <li class="list-group-item">Temp: {{ hour.temp_f }}°F</li>
-                        <li class="list-group-item">Rain Chance: {{ hour.chance_of_rain }}%</li>
-                        <li class="list-group-item">Wind: {{ hour.wind_mph }}mph</li>
-                        <li class="list-group-item">Humidity: {{ hour.humidity }}%</li>
-                        <li class="list-group-item">UV: {{ hour.uv }}</li>
-                    {% else %}
-                        <li class="list-group-item">Temp: {{ hour.temp_c }}°C</li>
-                        <li class="list-group-item">Rain Chance: {{ hour.chance_of_rain }}%</li>
-                        <li class="list-group-item">Wind: {{ hour.wind_kph }}kph</li>
-                        <li class="list-group-item">Humidity: {{ hour.humidity }}%</li>
-                        <li class="list-group-item">UV: {{ hour.uv }}</li>
-                    {% endif %} 
-                </ul>
-            </div>
-        {% endfor %}
+        <h6>{{ hour.time }}</h6>
+        <img src="https:{{ hour.condition.icon }}"
+                    alt="{{ hour.condition.text }}">
+        {% comment %} {% if unit == 'imperial'%}
+            <p>Temperature: {{ current.temp_f }}°F</p>
+            <p>Feels Like: {{ current.feelslike_f }}°F</p>
+            <p>Rain Chance: {{ current.chance_of_rain }}%</p>
+            <p>Precipitation: {{ current.precip_in}}in</p>
+            <p>Heat Index: {{ current.heatindex_f }}°F</p>
+            <p>UV: {{ current.uv }}</p>
+            <p>Wind Chill: {{ current.windchill_f }}°F</p>
+            <p>Wind Speed: {{ current.wind_mph }}mph</p>
+            <p>Wind Gust: {{ current.gust_mph }}mph</p>
+            <p>Dew Point: {{ current.dewpoint_f }}°F</p>
+            <p>Visibility: {{ current.vis_miles }}mi</p>
+            <p>Pressure: {{ current.pressure_in }}in</p>
+        {% else %}
+            <p>Temperature: {{ current.temp_c }}°C</p>
+            <p>Feels Like: {{ current.feelslike_c }}°C</p>
+            <p>Rain Chance: {{ current.chance_of_rain }}%</p>
+            <p>Precipitation: {{ current.precip_mm}}mm</p>
+            <p>Heat Index: {{ current.heatindex_c }}°C</p>
+            <p>UV: {{ current.uv }}</p>
+            <p>Wind Chill: {{ current.windchill_c }}°C</p>
+            <p>Wind Speed: {{ current.wind_kph }}kph</p>
+            <p>Wind Gust: {{ current.gust_kph }}kph</p>
+            <p>Dew Point: {{ current.dewpoint_c }}°C</p>
+            <p>Visibility: {{ current.vis_km }}km</p>
+            <p>Pressure: {{ current.pressure_mb }}mb</p>
+        {% endif %} {% endcomment %}
     </body>
 
     <form action="{% url 'home' %}">

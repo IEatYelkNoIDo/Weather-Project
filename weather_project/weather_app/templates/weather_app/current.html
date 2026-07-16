@@ -17,10 +17,18 @@
                 <input type="hidden" name="city" value="{{ city }}">
                 <input type="hidden" name="unit" value="{{ unit }}">
                 
-                <button type="submit" class="btn btn-primary" name="unit" value="imperial">Imperial</button>
-                <button type="submit" class="btn btn-success" name="unit" value="metric">Metric</button>
+                {% if unit == 'imperial' %}
+                    <button type="submit" class="btn btn-outline-primary" name="unit" value="imperial" disabled>Imperial</button>
+                    <button type="submit" class="btn btn-success" name="unit" value="metric">Metric</button>
+                {% else %}
+                    <button type="submit" class="btn btn-primary" name="unit" value="imperial">Imperial</button>
+                    <button type="submit" class="btn btn-outline-success" name="unit" value="metric" disabled>Metric</button>
+                {% endif %}
             </form>
+
             <h6>{{ time }}</h6>
+            <img src="https:{{ current.condition.icon }}"
+                        alt="{{ current.condition.text }}">
             {% if unit == 'imperial'%}
                     <p>Temperature: {{ current.temp_f }}°F</p>
                     <p>Feels Like: {{ current.feelslike_f }}°F</p>
