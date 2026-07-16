@@ -118,3 +118,31 @@ def forcast_view(request):
         "unit" : unit,
     }
     return render(request, 'weather_app/forecast.html', context)
+
+
+def specific_view(request):
+
+    city = request.GET.get('city')
+    unit = request.GET.get('unit', 'imperial')
+    index = int(request.GET.get('index', 0))
+
+    if not city:
+        return render(request, 'weather_app/home.html')
+
+    url = f'https://api.weatherapi.com/v1/forecast.json?key={WEATHER_API_KEY}&q={city}'
+    response = requests.get(url)
+    data = response.json()
+        
+    # Gets the acutal proper location name instead of what the user types
+    official_city = data['location']['name']
+    hour = data['forecast']['forecastday'][0]['hour'][index]
+    
+
+    context = {
+        "city" : city,
+        "official_city" : official_city,
+        "unit" : unit,
+        "hour" : hour,
+        "index" : index,
+    }
+    return render(request, 'weather_app/specific.html', context)
